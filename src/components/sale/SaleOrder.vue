@@ -284,14 +284,14 @@
     </el-table-column>
     <el-table-column prop="u_name" label="审批人" width="120">
     </el-table-column>
-    <el-table-column prop="receivables" label="总金额" width="120">
+    <el-table-column prop="receivables" label="总金额/元" width="120">
     </el-table-column>
     <el-table-column prop="salesmen" label="销售员" width="120"
       >{{ name }}
     </el-table-column>
-    <el-table-column prop="advance" label="预售款" width="120">
+    <el-table-column prop="advance" label="预售款/元" width="120">
     </el-table-column>
-    <el-table-column prop="receivables" label="预售款" width="120">
+    <el-table-column prop="receivables" label="应收款/元" width="120">
     </el-table-column>
     <el-table-column prop="delivery_state" label="出库状态" width="120">
       <template v-slot="Ca">
