@@ -1,14 +1,14 @@
 <template>
-  <div>
+  <div class="UserInfo1">
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="年度结构分析" name="first">
+      <el-tab-pane label="商品库存报警" name="first">
         <AnnualStructure></AnnualStructure>
       </el-tab-pane>
       <el-tab-pane label="库存明细" name="second">
         <Inventory></Inventory>
       </el-tab-pane>
       <el-tab-pane label="商品过期查询" name="third">
-        <ProductSalesOrder></ProductSalesOrder>
+        <ProductOverdue></ProductOverdue>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -17,10 +17,10 @@
 <script>
 import AnnualStructure from "@/components/statistical/ware/AnnualStructure";
 import Inventory from "@/components/statistical/ware/Inventory";
-import ProductSalesOrder from "@/components/statistical/sal/ProductSalesOrder";
+import ProductOverdue from "@/components/statistical/ware/ProductOverdue";
 export default {
   name: "Warehouse",
-  components:{AnnualStructure,Inventory,ProductSalesOrder},
+  components:{AnnualStructure,Inventory,ProductOverdue},
   data(){
     return{
       activeName:"first"
@@ -29,4 +29,10 @@ export default {
 }
 </script>
 <style scoped>
+.UserInfo1 {
+  width: 100%;
+  height: 90%;
+  background-color: white;
+  font-size: 24px;
+}
 </style>
