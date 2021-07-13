@@ -56,9 +56,19 @@
 						}
 						]},
 					{
-						icon: "el-icon-lx-copy",
-						index: "tabs",
-						title: "销售管理"
+						icon: "el-icon-lx-emoji",
+						index: "icon",
+						title: "销售订单",
+						subs: [{
+							index: "SaleOrder",
+							title: "销售订单"
+						}, {
+							index: "sales",
+							title: "出库单"
+						}, {
+							index: "warehouse",
+							title: "收款单"
+						}, ]
 					},
 					{
 						icon: "el-icon-lx-calendar",
