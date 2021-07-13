@@ -7,37 +7,32 @@
 	<!-- 显示 -->
 	<el-table border :header-cell-style="{background:'#ebebeb'}" ref="multipleTable" stripe :data="CairuData"
 		tooltip-effect="dark" @selection-change="handleSelectionChange">
-		<el-table-column prop="puorderId" label="ID" width="150">
+		<el-table-column prop="goodsId" label="ID" width="100">
 		</el-table-column>
 		<el-table-column prop="puorderTimestamp" label="采购订单时间" width="120">
 		</el-table-column>
-		<el-table-column prop="puorderC" label="仓库" width="120">
-		</el-table-column>
-		<el-table-column prop="approval"  align="center" label="审批状态">
+		<el-table-column prop="approval" align="center" label="审批状态">
 			<template v-slot="Ca">
 				<p v-if="Ca.row.approval==0">未审核</p>
 				<p v-if="Ca.row.approval==1">已审核</p>
 			</template>
 		</el-table-column>
-		<el-table-column prop="puorderCg" label="采购员" width="120">
-		</el-table-column>
-		<el-table-column prop="puorderState" label="采购编号" width="120">
-		</el-table-column>
-		<el-table-column prop="puorderTotal" label="订单金额" width="120">
-		</el-table-column>
 		<el-table-column prop="explain" label="说明" width="120">
 		</el-table-column>
-		<el-table-column prop="puorderG" label="供应商名称" width="120">
+		<el-table-column fixed="right" label="操作" >
+			<template #default="scope">
+			<el-button type="text" size="small" @click="updatePuo(scope.row.puorderId)">审批</el-button>
+			</template>
 		</el-table-column>
 	</el-table>
 </template>
 
 <script>
-import qs from 'qs' 
+	import qs from 'qs'
 	import {
 		ElMessage
-	} from 'element-plus' 
-	
+	} from 'element-plus'
+
 	export default {
 		data() {
 			return {
@@ -48,7 +43,7 @@ import qs from 'qs'
 				},
 				formLabelWidth: '100px',
 				CairuData: []
-				
+
 			}
 		},
 		created() {
