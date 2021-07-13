@@ -76,26 +76,6 @@
           prop="Puorders_Price"
           label="订货金额">
       </el-table-column>
-      <el-table-column
-          prop="yzxsl"
-          label="已执行数量">
-      </el-table-column>
-      <el-table-column
-          prop="yzx"
-          label="已执行金额">
-      </el-table-column>
-      <el-table-column
-          label="未执行数量">
-        <template v-slot="slot">
-          {{slot.row.Puorders_num-slot.row.yzxsl}}
-        </template>
-      </el-table-column>
-      <el-table-column
-          label="未执行金额">
-        <template v-slot="slot">
-          {{slot.row.Puorders_Price-slot.row.yzx}}
-        </template>
-      </el-table-column>
     </el-table>
     <div class="page-list">
       <el-pagination

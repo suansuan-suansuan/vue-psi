@@ -97,7 +97,7 @@
       <el-table-column
           label="销售利润">
         <template v-slot="slot">
-          {{slot.row.product_num*slot.row.sj-slot.row.product_num*slot.row.cb}}
+          {{ slot.row.product_num*slot.row.sj - slot.row.product_num*slot.row.cb}}
         </template>
       </el-table-column>
     </el-table>
@@ -184,6 +184,16 @@ export default {
     };
   },
   methods: {
+    // 每页显示信息条数
+    handleSizeChange(pageSize) {
+      this.form.pageSize = pageSize
+      this.find(this.form);
+    },
+    // 进入某一页
+    handleCurrentChange(val) {
+      this.form.page = val
+      this.find(this.form)
+    },
     formatterController: function (row, column) {
       var date = row[column.property];
       if (date === undefined) {

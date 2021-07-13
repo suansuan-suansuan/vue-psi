@@ -4,7 +4,7 @@
       <el-tab-pane label="商品销售明细" name="second">
         <CommoditySales></CommoditySales>
       </el-tab-pane>
-      <el-tab-pane label="商品销售出库明细" name="third">
+      <el-tab-pane label="商品销售订单明细" name="third">
         <ProductSalesOrder></ProductSalesOrder>
       </el-tab-pane>
       <el-tab-pane label="销售毛利明细" name="fourth">

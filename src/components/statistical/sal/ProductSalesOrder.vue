@@ -76,26 +76,6 @@
           prop="sale_money"
           label="订货金额">
       </el-table-column>
-      <el-table-column
-          prop="ycxnum"
-          label="已执行数量">
-      </el-table-column>
-      <el-table-column
-          prop="ycxmoney"
-          label="已执行金额">
-      </el-table-column>
-      <el-table-column
-          label="未执行数量">
-        <template v-slot="slot">
-          {{slot.row.product_num-slot.row.ycxnum}}
-        </template>
-      </el-table-column>
-      <el-table-column
-          label="未执行金额">
-        <template v-slot="slot">
-          {{slot.row.sale_money-slot.row.ycxmoney}}
-        </template>
-      </el-table-column>
     </el-table>
     <div class="page-list">
       <el-pagination
@@ -179,6 +159,16 @@ export default {
     };
   },
   methods: {
+    // 每页显示信息条数
+    handleSizeChange(pageSize) {
+      this.form.pageSize = pageSize
+      this.find(this.form);
+    },
+    // 进入某一页
+    handleCurrentChange(val) {
+      this.form.page = val
+      this.find(this.form)
+    },
     formatterController:function(row, column) {
       var date = row[column.property];
       if (date === undefined) {

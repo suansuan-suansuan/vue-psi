@@ -38,7 +38,7 @@
         border
         style="width: 100%;margin-top: 30px">
       <el-table-column
-          prop="customer_name"
+          prop="customer"
           label="客户名称"
           width="180">
       </el-table-column>
@@ -175,6 +175,16 @@ export default {
     };
   },
   methods: {
+    // 每页显示信息条数
+    handleSizeChange(pageSize) {
+      this.form.pageSize = pageSize
+      this.find(this.form);
+    },
+    // 进入某一页
+    handleCurrentChange(val) {
+      this.form.page = val
+      this.find(this.form)
+    },
     formatterController:function(row, column) {
       var date = row[column.property];
       if (date === undefined) {
