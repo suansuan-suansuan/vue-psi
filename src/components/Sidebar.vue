@@ -59,7 +59,7 @@
 					{
 						icon: "el-icon-lx-emoji",
 						index: "icon",
-						title: "销售订单",
+						title: "销售管理",
 						subs: [{
 							index: "SaleOrder",
 							title: "销售订单"
@@ -108,21 +108,6 @@
 						index: "charts",
 						title: "基础资料"
 					},
-					// {
-					//     icon: "el-icon-rank",
-					//     index: "6",
-					//     title: "拖拽组件",
-					//     subs: [
-					//         {
-					//             index: "drag",
-					//             title: "拖拽列表"
-					//         },
-					//         {
-					//             index: "dialog",
-					//             title: "拖拽弹框"
-					//         }
-					//     ]
-					// },
 					{
 						icon: "el-icon-lx-global",
 						index: "",
@@ -155,11 +140,11 @@
 		},
 		created(){
 			var arr =[];
-			console.log("menus=>",this.menus)
+			//console.log("menus=>",this.menus)
 			for(let i=0;i<this.menus.length;i++){
 				for(let j=0;j<this.items.length;j++){
-					console.log("menusName=>",this.menus[i].menuName)
-					console.log("title=>",this.items[j].title)
+					//console.log("menusName=>",this.menus[i].menuName)
+					//console.log("title=>",this.items[j].title)
 					if(this.menus[i].menuName ==this.items[j].title){
 						arr.push(this.items[j])
 					}

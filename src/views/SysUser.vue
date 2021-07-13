@@ -140,8 +140,6 @@ export default {
             reqWay:'',
             roles:[],
             tableData: [],
-            multipleSelection: [],
-            delList: [],
             depts:[],
             deptTitle :'',
             editVisible: false,
@@ -272,7 +270,7 @@ export default {
         handleNodeClick(node){
             this.form.udept=node.deptId
             this.selectTreeName=node.dname
-            console.log("udept=》",this.form.udept)
+           // console.log("udept=》",this.form.udept)
         },
         generateUcode(){
           let year =new Date().getFullYear();
