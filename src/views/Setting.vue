@@ -33,7 +33,7 @@
                             type="text"
                             icon="el-icon-delete"
                             class="red"
-                            @click="handleDelete(scope.$index, scope.row)"
+                            @click="handleDelete(scope.row)"
                         >删除</el-button>
                     </template>
                 </el-table-column>
@@ -108,14 +108,24 @@ export default {
             })
         },
         // 删除操作
-        handleDelete(index) {
+        handleDelete(row) {
             // 二次确认删除
             this.$confirm("确定要删除吗？", "提示", {
                 type: "warning"
             })
                 .then(() => {
-                    this.$message.success("删除成功");
-                    this.tableData.splice(index, 1);
+                    var vm =this;
+                    vm.axios.delete("http://localhost:8089/cypsi/sys/delRoleAndMenu/"+row.roleId)
+                    .then(res =>{
+                        if(res.data.success){
+                            this.$notify({
+                                title: '成功',
+                                message: '操作成功',
+                                type: 'success'
+                            });
+                            vm.getData()
+                        }
+                    })
                 })
                 .catch(() => {});
         },
@@ -132,7 +142,6 @@ export default {
                 // })
                 // console.log("menus",vm.form.menus);
                 vm.editVisible = true;
-                          //this.form.menus=this.roleCheckdMenus;
                 
             })
         },

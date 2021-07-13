@@ -65,6 +65,7 @@ export default {
                             }else{
                                 this.$message.success("登录成功");
                                 localStorage.setItem("ms_username", this.param.uName);
+                                this.$store.commit("setMenus",res.data.data.menus)
                                 this.$router.push("/");
                             }  
                     })

@@ -18,7 +18,6 @@
                 class="table"
                 ref="multipleTable"
                 header-cell-class-name="table-header"
-                @selection-change="handleSelectionChange"
             >
                 <el-table-column type="index" label="序号" width="55" align="center"></el-table-column>
                 <el-table-column prop="uname" label="用户名称" align="center"></el-table-column>
@@ -96,7 +95,16 @@
                 <el-form-item label="密码">
                     <el-input v-model="form.upass" show-password></el-input>
                 </el-form-item>
-
+                 <el-form-item label="职务">
+                    <el-select v-model="form.role" placeholder="请选择">
+                        <el-option
+                        v-for="item in roles"
+                        :key="item.roleId"
+                        :label="item.roleName"
+                        :value="item.roleId">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
                 <el-form-item label="审批列表">
                     <el-select v-model="form.approvedIds" multiple placeholder="请选择">
                         <el-option
@@ -130,6 +138,7 @@ export default {
     data() {
         return {
             reqWay:'',
+            roles:[],
             tableData: [],
             multipleSelection: [],
             delList: [],
@@ -164,6 +173,11 @@ export default {
             .then(res => {
                 vm.depts = Tool.array2Tree(res.data.data,0)
             })
+            vm.axios.get("http://localhost:8089/cypsi/sys/getAllRoles")
+            .then(res =>{
+                vm.roles=res.data.data
+                console.log("roles=>",vm.roles)
+            })
         },
         // 触发搜索按钮
         handleSearch() {
@@ -192,10 +206,6 @@ export default {
                     })
                 })
                 .catch(() => {});
-        },
-        // 多选操作
-        handleSelectionChange(val) {
-            this.multipleSelection = val;
         },
         // 编辑操作
         handleEdit(row) {
@@ -229,11 +239,6 @@ export default {
             })
             this.editVisible = false;
 
-        },
-        // 分页导航
-        handlePageChange(val) {
-            this.$set(this.query, "pageIndex", val);
-            this.getData();
         },
         //新增用户
         handleAdd(){
