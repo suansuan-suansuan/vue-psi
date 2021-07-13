@@ -483,7 +483,7 @@ export default {
         },
         method: "post",
       })
-        .then(function (response) {
+        .then(function () {
           _this.findorder();
         })
         .catch(function (error) {
@@ -491,7 +491,7 @@ export default {
         });
     },
     //反审
-    approval_state0(val) {
+    approval_state0() {
       var _this = this;
       this.axios({
         url: "http://localhost:8089/cypsi/SaleOrder/add/",
