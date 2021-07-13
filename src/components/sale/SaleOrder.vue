@@ -375,7 +375,7 @@ export default {
         salesmen: "", //销售人员
         remarks: "", // 订单备注
         approver: "", //审批人
-        //表尾买家信息
+        //表尾买家信息  
         receivables: 0, //应收款
         advance: 0, //预收款
       },
