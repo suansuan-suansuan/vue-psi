@@ -371,7 +371,7 @@ export default {
         saleOrderTime: new Date(), //单据时间
         deliveryTime: new Date(), //交货时间
         customer: "", //客户
-        salesmen: "", //销售人员
+        salesmen:localStorage.getItem("ms_userId"), //销售人员
         remarks: "", // 订单备注
         approver: "", //审批人
         //表尾买家信息
@@ -385,7 +385,7 @@ export default {
         deliveryOrderTime: new Date(), //单据时间
         customer: "", //客户
         saleOrderId: "",
-        salesmen: "", //销售人员
+        salesmen:localStorage.getItem("ms_userId"), //销售人员
         remarks: "", // 订单备注
         approver: "", //审批人
         //表尾买家信息
