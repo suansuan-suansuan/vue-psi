@@ -24,6 +24,91 @@
 
   <!-- 11111111111111111111111111111111111111 -->
   <el-dialog
+    title="出库单"
+    v-model="open2"
+    width="60%"
+    :before-close="handleClose"
+  >
+    <el-form :model="form" ref="form" label-width="100px">
+      <div>
+        <el-form-item label="出库单" :label-width="formLabelWidth">
+          <el-input
+            v-model="saleDelivery.DeliveryOrderId"
+            autocomplete="off"
+            disabled
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="销售单编号" :label-width="formLabelWidth">
+          <el-input
+            v-model="saleDelivery.saleOrderId"
+            autocomplete="off"
+            disabled
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="客户" :label-width="formLabelWidth">
+          <el-input v-model="saleDelivery.customer" autocomplete="off" disabled>
+          </el-input>
+        </el-form-item>
+        <el-form-item label="出库日期" :label-width="formLabelWidth">
+          <el-date-picker
+            v-model="saleDelivery.deliveryOrderTime"
+            type="date"
+            placeholder="选择日期"
+          ></el-date-picker>
+        </el-form-item>
+        <el-form-item label="审批人" :label-width="formLabelWidth">
+          <el-select v-model="saleDelivery.approver" placeholder="请选择">
+            <el-option
+              v-for="item in approvers"
+              :key="item.uid"
+              :label="item.uname"
+              :value="item.uid"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="应收款" :label-width="formLabelWidth">
+          <el-input
+            v-model="saleDelivery.receivables"
+            autocomplete="off"
+            disabled
+          ></el-input>
+        </el-form-item>
+        <el-table
+          border
+          :header-cell-style="{ background: '#ebebeb' }"
+          ref="multipleTable"
+          stripe
+          show-summary
+          :summary-method="getSummaries"
+          :data="orderdelivery"
+          tooltip-effect="dark"
+          @selection-change="handleSelectionChange"
+        >
+          <el-table-column prop="product_name" label="商品名" width="120">
+          </el-table-column>
+          <el-table-column prop="product_number" label="商品编号" width="120">
+          </el-table-column>
+          <el-table-column prop="remarks" label="备注" width="120">
+          </el-table-column>
+          <el-table-column prop="product_spec" label="规格" width="120">
+          </el-table-column>
+          <el-table-column prop="purchase_unit_price" label="单价" width="120">
+          </el-table-column>
+          <el-table-column prop="product_num" label="数量" width="120">
+          </el-table-column>
+          <el-table-column prop="sale_money" label="金额" width="120">
+          </el-table-column>
+        </el-table>
+        <el-form-item>
+          <el-button :plain="true" @click="open2 = false">取 消</el-button>
+          <el-button :plain="true" type="primary" @click="addDeliveryOrder(0)"
+            >确定</el-button
+          >
+        </el-form-item>
+      </div>
+    </el-form>
+  </el-dialog>
+  <el-dialog
     title="销售订单"
     v-model="open"
     width="60%"
@@ -110,10 +195,10 @@
         <el-form-item label="审批人" :label-width="formLabelWidth">
           <el-select v-model="saleorder.approver" placeholder="请选择">
             <el-option
-              v-for="item in baseCustomer"
-              :key="item.customerNumber"
-              :label="item.customerName"
-              :value="item.customerNumber"
+              v-for="item in approvers"
+              :key="item.uid"
+              :label="item.uname"
+              :value="item.uid"
             />
           </el-select>
         </el-form-item>
@@ -139,11 +224,6 @@
           tooltip-effect="dark"
           @selection-change="handleSelectionChange"
         >
-          <el-table-column fixed="right" label="操作">
-            <el-button type="text" size="small" v-on:click="deleteInfo(index)"
-              >X</el-button
-            >
-          </el-table-column>
           <el-table-column prop="product_name" label="商品名" width="120">
           </el-table-column>
           <el-table-column prop="product_number" label="商品编号" width="120">
@@ -178,29 +258,60 @@
     :header-cell-style="{ background: '#ebebeb' }"
     ref="multipleTable"
     stripe
-    :data="Caiset"
+    :data="SaleOrders"
     tooltip-effect="dark"
     @selection-change="handleSelectionChange"
   >
-    <el-table-column prop="puorderId" label="ID" width="150"> </el-table-column>
-    <el-table-column prop="puorderTimestamp" label="采购订单时间" width="120">
+    <el-table-column prop="sale_order_Id" label="订单编号" width="150">
     </el-table-column>
-    <el-table-column prop="puorderC" label="仓库" width="120">
-    </el-table-column>
-    <el-table-column prop="approval" label="审批状态">
-      <template v-slot="Ca">
-        <p v-if="Ca.row.approval == 0">未审核</p>
-        <p v-if="Ca.row.approval == 1">已审核</p>
+    <el-table-column prop="sale_order_Id" label="出库单" width="150">
+      <template v-slot="Caaa">
+        <el-button @click="AddDeliveryOrderDialog(Caaa.row)"
+          >生成出库单</el-button
+        >
       </template>
     </el-table-column>
-    <el-table-column prop="puorderCg" label="采购员" width="120">
+
+    <el-table-column prop="sale_order_time" label="订单时间" width="120">
     </el-table-column>
-    <el-table-column prop="puorderState" label="采购编号" width="120">
+    <el-table-column prop="customer_name" label="客户" width="120">
     </el-table-column>
-    <el-table-column prop="puorderTotal" label="订单金额" width="120">
+    <el-table-column prop="approval_state" label="审批状态">
+      <template v-slot="Ca">
+        <p v-if="Ca.row.approval_state == 0">未审核</p>
+        <p v-if="Ca.row.approval_state == 1">审核通过</p>
+      </template>
     </el-table-column>
-    <el-table-column prop="explain" label="说明" width="120"> </el-table-column>
-    <el-table-column prop="puorderG" label="供应商名称" width="120">
+    <el-table-column prop="u_name" label="审批人" width="120">
+    </el-table-column>
+    <el-table-column prop="receivables" label="总金额" width="120">
+    </el-table-column>
+    <el-table-column prop="salesmen" label="销售员" width="120">
+    </el-table-column>
+    <el-table-column prop="advance" label="预售款" width="120">
+    </el-table-column>
+    <el-table-column prop="receivables" label="预售款" width="120">
+    </el-table-column>
+    <el-table-column prop="delivery_state" label="出库状态" width="120">
+      <template v-slot="Ca">
+        <p v-if="Ca.row.approval_state == 0">未出库</p>
+        <p v-if="Ca.row.approval_state == 1">已出库</p>
+      </template>
+    </el-table-column>
+    <el-table-column prop="order_state" label="订单状态" width="120">
+      <template v-slot="Ca">
+        <p v-if="Ca.row.approval_state == 0">未完成</p>
+        <p v-if="Ca.row.approval_state == 1">已完成</p>
+      </template>
+    </el-table-column>
+    <el-table-column prop="approval_time" label="审批时间" width="120">
+    </el-table-column>
+    <el-table-column prop="delivery_time" label="出库时间" width="120">
+    </el-table-column>
+    <el-table-column prop="remarks" label="备注" width="120"> </el-table-column>
+    <el-table-column prop="found_time" label="创建时间" width="120">
+    </el-table-column>
+    <el-table-column prop="update_time" label="修改时间" width="120">
     </el-table-column>
   </el-table>
   <div class="block">
@@ -233,9 +344,11 @@ export default {
       joinstockdata: [], //已选库存产品
       open: false,
       open1: false,
+      open2: false,
       baseCustomer: [], //客户
-      approver: [], //审批人
+      approvers: [], //审批人
       productdatas: [],
+      orderdelivery: [],
       saleMoney: 0,
       sss: [],
       productdata: [
@@ -259,24 +372,127 @@ export default {
         salesmen: "", //销售人员
         remarks: "", // 订单备注
         approver: "", //审批人
-        //表尾买家信息
+        //表尾买家信息  
         receivables: 0, //应收款
         advance: 0, //预收款
       },
+      //出库单
+      saleDelivery: {
+        //表头单据信息
+        DeliveryOrderId: "XSCK" + Date.now(), //单据编号
+        deliveryOrderTime: new Date(), //单据时间
+        customer: "", //客户
+        saleOrderId: "",
+        salesmen: "", //销售人员
+        remarks: "", // 订单备注
+        approver: "", //审批人
+        //表尾买家信息
+        receivables: 0, //应收款
+      },
+      SaleOrders: [],
     };
   },
   created() {
+    this.findApprover();
     this.findCustomer();
+    this.findorder();
   },
   methods: {
     deleteInfo(index) {
       this.Caiset.splice(index, 1);
+    },
+    //出库单生成
+    AddDeliveryOrderDialog(val) {
+      this.saleDelivery.saleOrderId = val.sale_order_Id;
+      this.saleDelivery.customer = val.customer_name;
+      this.saleDelivery.receivables = val.receivables;
+      this.saleDelivery.salesmen = val.salesmen;
+
+      var _this = this;
+      var fd = {
+        id: this.saleDelivery.saleOrderId,
+      };
+      this.axios({
+        url: "http://localhost:8089/cypsi/saledelivery/findall",
+        params: fd,
+        method: "get",
+      })
+        .then(function (response) {
+          _this.orderdelivery = response.data.data;
+          console.log("11111" + JSON.stringify(_this.orderdelivery));
+          _this.open2 = true;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    //
+    //添加订单
+    addDeliveryOrder(type) {
+      var _this = this;
+      console.log("------------" + JSON.stringify(this.productdata));
+      this.axios({
+        url: "http://localhost:8089/cypsi/saledelivery/add/" + type,
+        data: {
+          delivery: JSON.stringify(_this.saleDelivery), //_this.formorder ,
+          deliverydetails: JSON.stringify(_this.orderdelivery), //_this.productdata//
+        },
+        method: "post",
+      })
+        .then(function (response) {
+          _this.approver = response.data.list;
+          _this.open2 = false;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
     //添加订单
     addorder(type) {
       var _this = this;
       this.axios({
         url: "http://localhost:8089/cypsi/SaleOrder/add/" + type,
+        data: {
+          order: JSON.stringify(_this.saleorder), //_this.formorder ,
+          orderdetails: JSON.stringify(_this.productdata), //_this.productdata//
+        },
+        method: "post",
+      })
+        .then(function (response) {
+          _this.approver = response.data.list;
+          _this.open = false;
+          _this.findorder();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    //审批
+    approval_state1(val) {
+      var _this = this;
+      var fd = {
+        saleOrderId: val.saleOrderId,
+        //sale
+      };
+      this.axios({
+        url: "http://localhost:8089/cypsi/SaleOrder/approval",
+        data: {
+          order: fd,
+        },
+        method: "post",
+      })
+        .then(function () {
+          _this.findorder();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    //反审
+    approval_state0() {
+      var _this = this;
+      this.axios({
+        url: "http://localhost:8089/cypsi/SaleOrder/add/",
         data: {
           order: JSON.stringify(_this.saleorder), //_this.formorder ,
           orderdetails: JSON.stringify(_this.productdata), //_this.productdata//
@@ -326,11 +542,12 @@ export default {
     findApprover() {
       var _this = this;
       this.axios({
-        url: "http://localhost:8089/cypsi/BaseCustomer/baseCustomer",
+        url: "http://localhost:8089/cypsi/SaleOrder/getuser",
         method: "get",
       })
         .then(function (response) {
-          _this.approver = response.data.list;
+          _this.approvers = response.data.data;
+          console.log("aaaaaa" + _this.approvers);
         })
         .catch(function (error) {
           console.log(error);
@@ -377,7 +594,37 @@ export default {
       })
         .then(function (response) {
           _this.productdatas = response.data.data;
-          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    //新增出库单
+    AddDeliveryOrder(type) {
+      var _this = this;
+      var obj = { order: this.formorder, product: this.productdata };
+      this.axios({
+        url: "http://localhost:8089/cypsi/saledelivery/add" + type,
+        method: "post",
+        data: JSON.stringify(obj),
+      })
+        .then(function (response) {
+          _this.productdatas = response.data.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    //获取订单
+    findorder() {
+      var _this = this;
+      this.axios({
+        url: "http://localhost:8089/cypsi/SaleOrder/findall",
+        method: "get",
+      })
+        .then(function (response) {
+          _this.SaleOrders = response.data.data;
+          console.log("js:" + JSON.stringify(_this.SaleOrders));
         })
         .catch(function (error) {
           console.log(error);
@@ -406,7 +653,6 @@ export default {
           if (index == 7) {
             this.saleorder.receivables = sums[index] = sums[index].toFixed(2);
           }
-          console.log("sssssssss", this.saleorder.receivables);
           sums[index];
         }
       });

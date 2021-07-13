@@ -66,8 +66,6 @@ export default {
                                 this.$message.success("登录成功");
                                 localStorage.setItem("ms_userId", res.data.data.user.uid);
                                 localStorage.setItem("ms_username", this.param.uName);
-                                console.log("asfdsafdasds+"+localStorage.getItem("ms_userId"));
-                              
                                 this.$store.commit("setMenus",res.data.data.menus)
                                 this.$router.push("/");
                             }  
