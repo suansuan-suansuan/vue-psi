@@ -286,7 +286,8 @@
     </el-table-column>
     <el-table-column prop="receivables" label="总金额" width="120">
     </el-table-column>
-    <el-table-column prop="salesmen" label="销售员" width="120">
+    <el-table-column prop="salesmen" label="销售员" width="120"
+      >{{ name }}
     </el-table-column>
     <el-table-column prop="advance" label="预售款" width="120">
     </el-table-column>
@@ -332,6 +333,7 @@
 export default {
   data() {
     return {
+      name: localStorage.getItem("ms_username"),
       pageInfo: {
         Starttime: "",
         Endtime: "",
@@ -372,7 +374,7 @@ export default {
         salesmen: "", //销售人员
         remarks: "", // 订单备注
         approver: "", //审批人
-        //表尾买家信息  
+        //表尾买家信息
         receivables: 0, //应收款
         advance: 0, //预收款
       },
