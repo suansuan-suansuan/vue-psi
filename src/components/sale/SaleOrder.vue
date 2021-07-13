@@ -329,9 +329,6 @@
 </template>
 
 <script>
-import qs from "qs";
-import { ElMessage } from "element-plus";
-
 export default {
   data() {
     return {
@@ -422,7 +419,7 @@ export default {
       })
         .then(function (response) {
           _this.orderdelivery = response.data.data;
-          console.log("11111" + _this.orderdelivery);
+          console.log("11111" + JSON.stringify(_this.orderdelivery));
           _this.open2 = true;
         })
         .catch(function (error) {
@@ -512,7 +509,7 @@ export default {
     },
     //添加销售产品
     addproduct() {
-      var productlist = [];
+      //var productlist = [];
       //       this.productdatas.forEach((item) => {
       //         productlist.push(item.productId);
       //       });
@@ -561,7 +558,7 @@ export default {
       console.log("this.sss:", this.sss);
     },
     //新增一行
-    addrow(productdata, event) {
+    addrow(productdata) {
       productdata.push({
         productId: "",
         productName: "",

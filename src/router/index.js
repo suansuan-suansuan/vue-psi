@@ -30,6 +30,57 @@ const routes = [{
 			/* webpackChunkName: "dashboard" */
 			"../views/Dashboard.vue")
 	},
+
+	{
+		path: "/dashboard",
+		name: "dashboard",
+		meta: {
+			title: '系统首页'
+		},
+		component: () => import (
+		/* webpackChunkName: "dashboard" */
+		"../views/Dashboard.vue")
+	},
+	{
+		path: "/sysUser",
+		name: "sysUser",
+		meta: {
+			title: '用户'
+		},
+		component: () => import (
+		/* webpackChunkName: "table" */
+		"../views/SysUser.vue")
+	},
+	{
+		path: "/syslog",
+		name: "syslog",
+		meta: {
+			title: '日志'
+		},
+		component: () => import (
+		/* webpackChunkName: "table" */
+		"../views/SysLog.vue")
+	},
+	{
+		path: "/baseDept",
+		name: "baseDept",
+		meta: {
+			title: '部门'
+		},
+		component: () => import (
+		/* webpackChunkName: "table" */
+		"../views/BaseDept.vue")
+	},
+	{
+		path: "/setting",
+		name: "setting",
+		meta: {
+			title: '权限'
+		},
+		component: () => import (
+		/* webpackChunkName: "table" */
+		"../views/Setting.vue")
+	},
 	{
 		path: "/table",
 		name: "basetable",
@@ -221,6 +272,7 @@ const router = createRouter({
 	routes
 });
 
+
 router.beforeEach((to, from, next) => {
 	document.title = `${to.meta.title} | vue-manage-system`;
 	const role = localStorage.getItem('ms_username');
@@ -237,3 +289,4 @@ router.beforeEach((to, from, next) => {
 });
 
 export default router;
+

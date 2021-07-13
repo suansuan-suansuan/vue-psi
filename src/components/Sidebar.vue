@@ -37,6 +37,7 @@
 	export default {
 		data() {
 			return {
+				menus: this.$store.state.menus,
 				items: [{
 						icon: "el-icon-lx-home",
 						index: "dashboard",
@@ -58,7 +59,7 @@
 					{
 						icon: "el-icon-lx-emoji",
 						index: "icon",
-						title: "销售订单",
+						title: "销售管理",
 						subs: [{
 							index: "SaleOrder",
 							title: "销售订单"
@@ -124,8 +125,21 @@
 					// },
 					{
 						icon: "el-icon-lx-global",
-						index: "i18n",
-						title: "系统设置"
+						index: "",
+						title: "系统设置",
+						subs: [{
+							index: "sysUser",
+							title: "用户设置"
+						}, {
+							index: "setting",
+							title: "权限设置"
+						}, {
+							index: "baseDept",
+							title: "部门架构"
+						}, {
+							index: "syslog",
+							title: "系统日志"
+						}]
 					},
 
 				]
@@ -138,6 +152,20 @@
 			collapse() {
 				return this.$store.state.collapse
 			}
+		},
+		created(){
+			var arr =[];
+			console.log("menus=>",this.menus)
+			for(let i=0;i<this.menus.length;i++){
+				for(let j=0;j<this.items.length;j++){
+					console.log("menusName=>",this.menus[i].menuName)
+					console.log("title=>",this.items[j].title)
+					if(this.menus[i].menuName ==this.items[j].title){
+						arr.push(this.items[j])
+					}
+				}
+			}
+			this.items=arr
 		}
 	};
 </script>

@@ -7,6 +7,7 @@ import VueAxios from "vue-axios"
 import ElementPlus from 'element-plus'
 import installElementPlus from './plugins/element'
 import './assets/css/icon.css'
+
 const app = createApp(App)
 installElementPlus(app)
 
@@ -14,5 +15,5 @@ app
     .use(store)
     .use(router)
 	.use(ElementPlus)
-	.use(VueAxios, axios)
+	.use(VueAxios,axios)
     .mount('#app')
