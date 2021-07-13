@@ -1,6 +1,5 @@
 import {createRouter, createWebHistory} from "vue-router";
 import Home from "../views/Home.vue";
-
 const routes = [
     {
         path: '/',
@@ -19,15 +18,46 @@ const routes = [
                 component: () => import (
                 /* webpackChunkName: "dashboard" */
                 "../views/Dashboard.vue")
-            }, {
-                path: "/table",
-                name: "basetable",
+            },
+            {
+                path: "/sysUser",
+                name: "sysUser",
                 meta: {
-                    title: '表格'
+                    title: '用户'
                 },
                 component: () => import (
                 /* webpackChunkName: "table" */
-                "../views/BaseTable.vue")
+                "../views/SysUser.vue")
+            },
+            {
+                path: "/syslog",
+                name: "syslog",
+                meta: {
+                    title: '日志'
+                },
+                component: () => import (
+                /* webpackChunkName: "table" */
+                "../views/SysLog.vue")
+            },
+            {
+                path: "/baseDept",
+                name: "baseDept",
+                meta: {
+                    title: '部门'
+                },
+                component: () => import (
+                /* webpackChunkName: "table" */
+                "../views/BaseDept.vue")
+            },
+            {
+                path: "/setting",
+                name: "setting",
+                meta: {
+                    title: '权限'
+                },
+                component: () => import (
+                /* webpackChunkName: "table" */
+                "../views/Setting.vue")
             }, {
                 path: "/charts",
                 name: "basecharts",
@@ -136,19 +166,22 @@ const router = createRouter({
     routes
 });
 
+
 router.beforeEach((to, from, next) => {
-    document.title = `${to.meta.title} | vue-manage-system`;
-    const role = localStorage.getItem('ms_username');
-    if (!role && to.path !== '/login') {
-        next('/login');
-    } else if (to.meta.permission) {
-        // 如果是管理员权限则可进入，这里只是简单的模拟管理员权限而已
-        role === 'admin'
-            ? next()
-            : next('/403');
-    } else {
-        next();
-    }
+	document.title = `${to.meta.title} | vue-manage-system`;
+	const role = localStorage.getItem('ms_username');
+	if (!role && to.path !== '/login') {
+		next('/login');
+	} else if (to.meta.permission) {
+		// 如果是管理员权限则可进入，这里只是简单的模拟管理员权限而已
+		role === 'admin' ?
+			next() :
+			next('/403');
+	} else {
+		next();
+	}
 });
+
+
 
 export default router;

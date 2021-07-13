@@ -4,7 +4,7 @@
             <div class="ms-title">后台管理系统</div>
             <el-form :model="param" :rules="rules" ref="login" label-width="0px" class="ms-content">
                 <el-form-item prop="username">
-                    <el-input v-model="param.username" placeholder="username">
+                    <el-input v-model="param.uName" placeholder="username">
                         <template #prepend>
                             <el-button icon="el-icon-user"></el-button>
                         </template>
@@ -14,7 +14,7 @@
                     <el-input
                         type="password"
                         placeholder="password"
-                        v-model="param.password"
+                        v-model="param.uPass"
                         @keyup.enter="submitForm()"
                     >
                         <template #prepend>
@@ -32,18 +32,19 @@
 </template>
 
 <script>
+import { ElMessage } from "element-plus";
 export default {
     data() {
         return {
             param: {
-                username: "admin",
-                password: "123123"
+                uName: "twx",
+                uPass: "123456"
             },
             rules: {
-                username: [
+                uName: [
                     { required: true, message: "请输入用户名", trigger: "blur" }
                 ],
-                password: [
+                uPass: [
                     { required: true, message: "请输入密码", trigger: "blur" }
                 ]
             }
@@ -56,9 +57,18 @@ export default {
         submitForm() {
             this.$refs.login.validate(valid => {
                 if (valid) {
-                    this.$message.success("登录成功");
-                    localStorage.setItem("ms_username", this.param.username);
-                    this.$router.push("/");
+                    var vm = this;
+                    vm.axios.post("http://localhost:8089/cypsi/sys/login",vm.param)
+                    .then(res => {
+                          if (typeof res.data.data == "string") {
+                                ElMessage.error(res.data.data);
+                            }else{
+                                this.$message.success("登录成功");
+                                localStorage.setItem("ms_username", this.param.uName);
+                                this.$router.push("/");
+                            }  
+                    })
+                  
                 } else {
                     this.$message.error("请输入账号和密码");
                     return false;

@@ -125,9 +125,28 @@ export default {
                 //     ]
                 // },
                 {
-                    icon: "el-icon-lx-global",
-                    index: "i18n",
-                    title: "系统设置"
+                    icon: "el-icon-setting",
+                    index: "",
+                    title: "系统设置",
+                    subs: [
+                        {
+                            index: "sysUser",
+                            title: "用户设置"
+                        },
+                        {
+                            index: "setting",
+                            title: "权限设置"
+                        },
+                        {
+                            index: "syslog",
+                            title: "系统日志"
+                        },
+                        {
+                            index: "baseDept",
+                            title: "部门架构"
+                        },
+                      
+                    ]
                 },
               
             ]
