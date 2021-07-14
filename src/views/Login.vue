@@ -37,7 +37,7 @@ export default {
     data() {
         return {
             param: {
-                uName: "twx",
+                uName: "admin",
                 uPass: "123456"
             },
             rules: {

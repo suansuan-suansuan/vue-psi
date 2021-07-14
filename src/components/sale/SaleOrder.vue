@@ -284,13 +284,14 @@
     </el-table-column>
     <el-table-column prop="u_name" label="审批人" width="120">
     </el-table-column>
-    <el-table-column prop="receivables" label="总金额" width="120">
+    <el-table-column prop="receivables" label="总金额/元" width="120">
     </el-table-column>
-    <el-table-column prop="salesmen" label="销售员" width="120">
+    <el-table-column prop="salesmen" label="销售员" width="120"
+      >{{ name }}
     </el-table-column>
-    <el-table-column prop="advance" label="预售款" width="120">
+    <el-table-column prop="advance" label="预售款/元" width="120">
     </el-table-column>
-    <el-table-column prop="receivables" label="预售款" width="120">
+    <el-table-column prop="receivables" label="应收款/元" width="120">
     </el-table-column>
     <el-table-column prop="delivery_state" label="出库状态" width="120">
       <template v-slot="Ca">
@@ -332,6 +333,7 @@
 export default {
   data() {
     return {
+      name: localStorage.getItem("ms_username"),
       pageInfo: {
         Starttime: "",
         Endtime: "",
@@ -369,10 +371,10 @@ export default {
         saleOrderTime: new Date(), //单据时间
         deliveryTime: new Date(), //交货时间
         customer: "", //客户
-        salesmen: "", //销售人员
+        salesmen:localStorage.getItem("ms_userId"), //销售人员
         remarks: "", // 订单备注
         approver: "", //审批人
-        //表尾买家信息  
+        //表尾买家信息
         receivables: 0, //应收款
         advance: 0, //预收款
       },
@@ -383,7 +385,7 @@ export default {
         deliveryOrderTime: new Date(), //单据时间
         customer: "", //客户
         saleOrderId: "",
-        salesmen: "", //销售人员
+        salesmen:localStorage.getItem("ms_userId"), //销售人员
         remarks: "", // 订单备注
         approver: "", //审批人
         //表尾买家信息

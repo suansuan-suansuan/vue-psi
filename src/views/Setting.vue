@@ -51,9 +51,11 @@
                     :data="treeData"
                     show-checkbox
                     default-expand-all
-                    node-key="roleId"
-                    ref="tree"
+                    check-strictly
+                    node-key="menuId"
+                    ref="menuTree"
                     highlight-current
+                    :default-checked-keys="checkedMenuIds"
                     :props="props"
                     @check-change="handleCheckChange">
                     </el-tree>
@@ -87,6 +89,7 @@ export default {
               label: 'menuName',
               children: 'children',
             },
+            checkedMenuIds:[],
             roleCheckdMenus:[]
         };
     },
@@ -133,18 +136,30 @@ export default {
         handleEdit(row) {
             this.reqWay='put'
             var vm =this;
+            vm.checkedMenuIds=[]
             vm.axios.get("http://localhost:8089/cypsi/sys/getRoleAndMenu/"+row.roleId)
             .then(res =>{
                 vm.form=res.data.data;
                 vm.form.roleId=row.roleId;
-                // vm.$nextTick(()=>{
-                //     vm.$refs.tree.setCheckedNodes(vm.form.menus)
-                // })
-                // console.log("menus",vm.form.menus);
+                for(let i=0;i<vm.form.menus.length;i++){
+                    vm.checkedMenuIds.push(vm.form.menus[i].menuId)
+                }
+               // console.log("menus",vm.checkedMenuIds);
+                //vm.checkedMenuIds=res.data.data.menus
+                //console.log("menus",vm.form.menus);
                 vm.editVisible = true;
-                
             })
+
+            this.setCheckedKey()
         },
+        setCheckedKey(){
+                this.$nextTick(()=>{
+                console.log("refs",this.$refs)
+                console.log("refs",this.$refs.menuTree)
+                this.$refs.menuTree.setCheckedKeys(this.checkedMenuIds,true)
+            })
+        }
+        ,
         // 保存编辑
         saveEdit() {
             this.form.updateBy=localStorage.getItem("ms_username")
