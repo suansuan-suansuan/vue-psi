@@ -7,7 +7,7 @@
 	<!-- 显示 -->
 	<el-table border :header-cell-style="{background:'#ebebeb'}" ref="multipleTable" stripe :data="CairuData"
 		tooltip-effect="dark" @selection-change="handleSelectionChange">
-		<el-table-column prop="goodsId" label="ID" width="100">
+		<el-table-column type="selection" width="50" align="center">
 		</el-table-column>
 		<el-table-column prop="puorderTimestamp" label="采购订单时间" width="120">
 		</el-table-column>
@@ -19,16 +19,26 @@
 		</el-table-column>
 		<el-table-column prop="explain" label="说明" width="120">
 		</el-table-column>
-		<el-table-column fixed="right" label="操作" >
+		<el-table-column fixed="right" label="操作">
 			<template #default="scope">
-			<el-button type="text" size="small" @click="updatePuo(scope.row.puorderId)">审批</el-button>
+				<el-button type="text" size="small" @click="updatePuo(scope.row.puorderId)">审批</el-button>
 			</template>
 		</el-table-column>
 	</el-table>
+	<div class="block">
+		<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+			:current-page="pageInfo.currentPage" :page-sizes="[2, 4, 6, 8]" :page-size="pageInfo.pagesize"
+			layout="total, sizes, prev, pager, next, jumper" :total="pageInfo.total">
+		</el-pagination>
+	</div>
 </template>
 
 <script>
-	//import qs from 'qs'
+	import qs from 'qs'
+	import {
+		ElMessage
+	} from 'element-plus'
+
 	export default {
 		data() {
 			return {
@@ -38,13 +48,13 @@
 					total: 0 //总记录条数，数据库查出来的
 				},
 				formLabelWidth: '100px',
-				CairuData: []
-
+				CairuData: [],
+				BaseDepotData: [],
 			}
 		},
 		created() {
 			const _this = this
-			this.axios.get("http://localhost:8089/cypsi/test/GoselectAll", {
+			this.axios.get("http://localhost:8089/cypsi/test/selectAllWJgg", {
 					params: this.pageInfo
 				})
 				.then(function(response) {
@@ -53,14 +63,21 @@
 					console.log(response.data)
 				}).catch(function(error) {
 					console.log(error)
+				}),
+				this.axios.get("http://localhost:8089/cypsi/BaseDepotController/queryAllWWWW")
+				.then(function(response) {
+					_this.BaseDepotData = response.data
+					console.log(response);
+				}).catch(function(error) {
+					console.log(error)
 				})
 		},
 		methods: {
 			handleCurrentChange(currentPage) {
 				var _this = this
 				this.pageInfo.currentPage = currentPage
-				//var ps = qs.stringify(this.pageInfo)
-				this.axios.get("http://localhost:8089/cypsi/test/GoselectAll", {
+				var ps = qs.stringify(this.pageInfo)
+				this.axios.get("http://localhost:8089/cypsi/test/selectAllWJgg", {
 						params: this.pageInfo
 					})
 					.then(function(response) {
@@ -73,7 +90,7 @@
 			handleSizeChange(pagesize) {
 				var _this = this
 				this.pageInfo.pagesize = pagesize
-				//var ps = qs.stringify(this.pageInfo)
+				var ps = qs.stringify(this.pageInfo)
 				this.axios.get("http://localhost:8089/cypsi/test/GoselectAll", {
 						params: this.pageInfo
 					})
