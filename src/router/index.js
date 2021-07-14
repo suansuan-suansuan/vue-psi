@@ -3,14 +3,15 @@ import {
 	createWebHistory
 } from "vue-router";
 import Home from "../views/Home.vue";
+import Caistet from "@/components/Caiguo/Caistet";
+import Cairu from "@/components/Caiguo/Cairu";
 import Financial from "@/components/statistical/Financial.vue";
 import Purchasing from "@/components/statistical/Purchasing";
 import Warehouse from "@/components/statistical/Warehouse";
 import Sales from "@/components/statistical/Sales";
-import Depot from "../components/basedata/BaseDepot.vue"
-import Customer from "../components/basedata/BaseCustomer.vue"
-import Prosuct from "../components/basedata/BaseProduct.vue"
-import Vendor from "../components/basedata/BaseVendor.vue"
+import SaleOrder from "@/components/sale/SaleOrder";
+import DeliveryOrder from "@/components/sale/DeliveryOrder";
+import CapitalReceipt from "@/components/sale/CapitalReceipt";
 
 const routes = [{
 	path: '/',
@@ -20,181 +21,240 @@ const routes = [{
 	name: "Home",
 	component: Home,
 	children: [{
-			path: "/dashboard",
-			name: "dashboard",
-			meta: {
-				title: '系统首页'
-			},
-			component: () => import(
-				/* webpackChunkName: "dashboard" */
-				"../views/Dashboard.vue")
+		path: "/dashboard",
+		name: "dashboard",
+		meta: {
+			title: '系统首页'
 		},
-		{
-			path: "/table",
-			name: "basetable",
-			meta: {
-				title: '表格'
-			},
-			component: () => import(
-				/* webpackChunkName: "table" */
-				"../views/BaseTable.vue")
+		component: () => import(
+			/* webpackChunkName: "dashboard" */
+			"../views/Dashboard.vue")
+	},
+
+	{
+		path: "/dashboard",
+		name: "dashboard",
+		meta: {
+			title: '系统首页'
 		},
-		{
-			path: "/financial",
-			name: "financial",
-			meta: {
-				title: '财务'
-			},
-			component: Financial
+		component: () => import (
+		/* webpackChunkName: "dashboard" */
+		"../views/Dashboard.vue")
+	},
+	{
+		path: "/sysUser",
+		name: "sysUser",
+		meta: {
+			title: '用户'
 		},
-		{
-			path: "/purchasing",
-			name: "purchasing",
-			meta: {
-				title: '采购'
-			},
-			component: Purchasing
+		component: () => import (
+		/* webpackChunkName: "table" */
+		"../views/SysUser.vue")
+	},
+	{
+		path: "/syslog",
+		name: "syslog",
+		meta: {
+			title: '日志'
 		},
-		{
-			path: "/warehouse",
-			name: "Warehouse",
-			meta: {
-				title: '仓库'
-			},
-			component: Warehouse
+		component: () => import (
+		/* webpackChunkName: "table" */
+		"../views/SysLog.vue")
+	},
+	{
+		path: "/baseDept",
+		name: "baseDept",
+		meta: {
+			title: '部门'
 		},
-		{
-			path: "/sales",
-			name: "sales",
-			meta: {
-				title: '销售'
-			},
-			component: Sales
+		component: () => import (
+		/* webpackChunkName: "table" */
+		"../views/BaseDept.vue")
+	},
+	{
+		path: "/setting",
+		name: "setting",
+		meta: {
+			title: '权限'
 		},
-		{
-			path: "/Depot",
-			name: "Depot",
-			meta: {
-				title: '仓库管理'
-			},
-			component: Depot
+		component: () => import (
+		/* webpackChunkName: "table" */
+		"../views/Setting.vue")
+	},
+	{
+		path: "/table",
+		name: "basetable",
+		meta: {
+			title: '表格'
 		},
-		{
-			path: "/Customer",
-			name: "Customer",
-			meta: {
-				title: '客户管理'
-			},
-			component: Customer
+		component: () => import(
+			/* webpackChunkName: "table" */
+			"../views/BaseTable.vue")
+	},
+	{
+		path: "/SaleOrder",
+		name: "SaleOrder",
+		meta: {
+			title: '销售订单'
 		},
-		{
-			path: "/Prosuct",
-			name: "Prosuct",
-			meta: {
-				title: '产品管理'
-			},
-			component: Prosuct
+		component: SaleOrder
+	},
+	{
+		path: "/DeliveryOrder",
+		name: "DeliveryOrder",
+		meta: {
+			title: '出库单'
 		},
-		{
-			path: "/Vendor",
-			name: "Vendor",
-			meta: {
-				title: '供应商管理'
-			},
-			component: Vendor
+		component: DeliveryOrder
+	},
+	{
+		path: "/CapitalReceipt",
+		name: "CapitalReceipt",
+		meta: {
+			title: '销售订单'
 		},
-		{
-			path: "/charts",
-			name: "basecharts",
-			meta: {
-				title: '图表'
-			},
-			component: () => import(
-				/* webpackChunkName: "charts" */
-				"../views/BaseCharts.vue")
+		component: CapitalReceipt
+	},
+	{
+		path: "/financial",
+		name: "financial",
+		meta: {
+			title: '财务'
 		},
-		{
-			path: "/form",
-			name: "baseform",
-			meta: {
-				title: '表单'
-			},
-			component: () => import(
-				/* webpackChunkName: "form" */
-				"../views/BaseForm.vue")
+		component: Financial
+	},
+	{
+		path: "/purchasing",
+		name: "purchasing",
+		meta: {
+			title: '采购'
 		},
-		{
-			path: "/tabs",
-			name: "tabs",
-			meta: {
-				title: 'tab标签'
-			},
-			component: () => import(
-				/* webpackChunkName: "tabs" */
-				"../views/Tabs.vue")
-		}, {
-			path: "/donate",
-			name: "donate",
-			meta: {
-				title: '鼓励作者'
-			},
-			component: () => import(
-				/* webpackChunkName: "donate" */
-				"../views/Donate.vue")
-		}, {
-			path: "/permission",
-			name: "permission",
-			meta: {
-				title: '权限管理',
-				permission: true
-			},
-			component: () => import(
-				/* webpackChunkName: "permission" */
-				"../views/Permission.vue")
-		}, {
-			path: "/i18n",
-			name: "i18n",
-			meta: {
-				title: '国际化语言'
-			},
-			component: () => import(
-				/* webpackChunkName: "i18n" */
-				"../views/I18n.vue")
-		}, {
-			path: "/upload",
-			name: "upload",
-			meta: {
-				title: '上传插件'
-			},
-			component: () => import(
-				/* webpackChunkName: "upload" */
-				"../views/Upload.vue")
-		}, {
-			path: "/icon",
-			name: "icon",
-			meta: {
-				title: '自定义图标'
-			},
-			component: () => import(
-				/* webpackChunkName: "icon" */
-				"../views/Icon.vue")
-		}, {
-			path: '/404',
-			name: '404',
-			meta: {
-				title: '找不到页面'
-			},
-			component: () => import( /* webpackChunkName: "404" */
-				'../views/404.vue')
-		}, {
-			path: '/403',
-			name: '403',
-			meta: {
-				title: '没有权限'
-			},
-			component: () => import( /* webpackChunkName: "403" */
-				'../views/403.vue')
-		}
+		component: Purchasing
+	},
+	{
+		path: "/warehouse",
+		name: "Warehouse",
+		meta: {
+			title: '仓库'
+		},
+		component: Warehouse
+	},
+	{
+		path: "/caistet",
+		name: "Caistet",
+		meta: {
+			title: '采购订单'
+		},
+		component: Caistet
+	},
+	{
+		path: "/cairu",
+		name: "Cairu",
+		meta: {
+			title: '采购入库'
+		},
+		component: Cairu
+	},
+	{
+		path: "/sales",
+		name: "sales",
+		meta: {
+			title: '销售'
+		},
+		component: Sales
+	},
+	{
+		path: "/charts",
+		name: "basecharts",
+		meta: {
+			title: '图表'
+		},
+		component: () => import(
+			/* webpackChunkName: "charts" */
+			"../views/BaseCharts.vue")
+	},
+	{
+		path: "/form",
+		name: "baseform",
+		meta: {
+			title: '表单'
+		},
+		component: () => import(
+			/* webpackChunkName: "form" */
+			"../views/BaseForm.vue")
+	},
+	{
+		path: "/tabs",
+		name: "tabs",
+		meta: {
+			title: 'tab标签'
+		},
+		component: () => import(
+			/* webpackChunkName: "tabs" */
+			"../views/Tabs.vue")
+	}, {
+		path: "/donate",
+		name: "donate",
+		meta: {
+			title: '鼓励作者'
+		},
+		component: () => import(
+			/* webpackChunkName: "donate" */
+			"../views/Donate.vue")
+	}, {
+		path: "/permission",
+		name: "permission",
+		meta: {
+			title: '权限管理',
+			permission: true
+		},
+		component: () => import(
+			/* webpackChunkName: "permission" */
+			"../views/Permission.vue")
+	}, {
+		path: "/i18n",
+		name: "i18n",
+		meta: {
+			title: '国际化语言'
+		},
+		component: () => import(
+			/* webpackChunkName: "i18n" */
+			"../views/I18n.vue")
+	}, {
+		path: "/upload",
+		name: "upload",
+		meta: {
+			title: '上传插件'
+		},
+		component: () => import(
+			/* webpackChunkName: "upload" */
+			"../views/Upload.vue")
+	}, {
+		path: "/icon",
+		name: "icon",
+		meta: {
+			title: '自定义图标'
+		},
+		component: () => import(
+			/* webpackChunkName: "icon" */
+			"../views/Icon.vue")
+	}, {
+		path: '/404',
+		name: '404',
+		meta: {
+			title: '找不到页面'
+		},
+		component: () => import( /* webpackChunkName: "404" */
+			'../views/404.vue')
+	}, {
+		path: '/403',
+		name: '403',
+		meta: {
+			title: '没有权限'
+		},
+		component: () => import( /* webpackChunkName: "403" */
+			'../views/403.vue')
+	}
 	]
 }, {
 	path: "/login",
@@ -212,6 +272,7 @@ const router = createRouter({
 	routes
 });
 
+
 router.beforeEach((to, from, next) => {
 	document.title = `${to.meta.title} | vue-manage-system`;
 	const role = localStorage.getItem('ms_username');
@@ -228,3 +289,4 @@ router.beforeEach((to, from, next) => {
 });
 
 export default router;
+

@@ -37,6 +37,7 @@
 	export default {
 		data() {
 			return {
+				menus: this.$store.state.menus,
 				items: [{
 						icon: "el-icon-lx-home",
 						index: "dashboard",
@@ -44,13 +45,31 @@
 					},
 					{
 						icon: "el-icon-lx-cascades",
-						index: "table",
-						title: "采购管理"
-					},
+						index: "5",
+						title: "采购管理",
+						subs: [{
+							index: "caistet",
+							title: "采购订单"
+						},
+						{
+							index: "cairu",
+							title: "采购入库"
+						}
+						]},
 					{
-						icon: "el-icon-lx-copy",
-						index: "tabs",
-						title: "销售管理"
+						icon: "el-icon-lx-emoji",
+						index: "icon",
+						title: "销售管理",
+						subs: [{
+							index: "SaleOrder",
+							title: "销售订单"
+						}, {
+							index: "sales",
+							title: "出库单"
+						}, {
+							index: "warehouse",
+							title: "收款单"
+						}, ]
 					},
 					{
 						icon: "el-icon-lx-calendar",
@@ -60,20 +79,6 @@
 								index: "form",
 								title: "基本表单"
 							},
-							//         {
-							//             index: "3-2",
-							//             title: "三级菜单",
-							//             subs: [
-							//                 {
-							//                     index: "editor",
-							//                     title: "富文本编辑器"
-							//                 },
-							//                 {
-							//                     index: "markdown",
-							//                     title: "markdown编辑器"
-							//                 }
-							//             ]
-							//         },
 							{
 								index: "upload",
 								title: "文件上传"
@@ -101,40 +106,25 @@
 					{
 						icon: "el-icon-pie-chart",
 						index: "charts",
-						title: "基础资料",
-						subs: [{
-							index: "vendor",
-							title: "供应商管理"
-						}, {
-							index: "customer",
-							title: "客户管理"
-						}, {
-							index: "depot",
-							title: "仓库管理"
-						}, {
-							index: "prosuct",
-							title: "产品管理"
-						}]
+						title: "基础资料"
 					},
-					// {
-					//     icon: "el-icon-rank",
-					//     index: "6",
-					//     title: "拖拽组件",
-					//     subs: [
-					//         {
-					//             index: "drag",
-					//             title: "拖拽列表"
-					//         },
-					//         {
-					//             index: "dialog",
-					//             title: "拖拽弹框"
-					//         }
-					//     ]
-					// },
 					{
 						icon: "el-icon-lx-global",
-						index: "i18n",
-						title: "系统设置"
+						index: "",
+						title: "系统设置",
+						subs: [{
+							index: "sysUser",
+							title: "用户设置"
+						}, {
+							index: "setting",
+							title: "权限设置"
+						}, {
+							index: "baseDept",
+							title: "部门架构"
+						}, {
+							index: "syslog",
+							title: "系统日志"
+						}]
 					},
 
 				]
@@ -147,6 +137,20 @@
 			collapse() {
 				return this.$store.state.collapse
 			}
+		},
+		created(){
+			var arr =[];
+			//console.log("menus=>",this.menus)
+			for(let i=0;i<this.menus.length;i++){
+				for(let j=0;j<this.items.length;j++){
+					//console.log("menusName=>",this.menus[i].menuName)
+					//console.log("title=>",this.items[j].title)
+					if(this.menus[i].menuName ==this.items[j].title){
+						arr.push(this.items[j])
+					}
+				}
+			}
+			this.items=arr
 		}
 	};
 </script>

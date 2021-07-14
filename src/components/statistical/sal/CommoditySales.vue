@@ -33,21 +33,95 @@
       <el-input style="width:10%" v-model="form.name" placeholder="请输入客户名称"></el-input>
       <el-button type="primary" icon="el-icon-search" @click="find">搜索</el-button>
     </el-row>
+    <el-table
+        :data="tableData"
+        border
+        style="width: 100%;margin-top: 30px">
+      <el-table-column
+          prop="customer"
+          label="客户名称"
+          width="180">
+      </el-table-column>
+      <el-table-column
+          prop="product_number"
+          label="商品编码"
+          width="180">
+      </el-table-column>
+      <el-table-column
+          prop="product_name"
+          label="商品名称">
+      </el-table-column>
+      <el-table-column
+          label="单据类型">
+        <template v-slot>
+          销售出库单
+        </template>
+      </el-table-column>
+      <el-table-column
+          prop="delivery_order_time"
+          :formatter="formatterController"
+          label="开单日期">
+      </el-table-column>
+      <el-table-column
+          prop="delivery_order_id"
+          label="单据号">
+      </el-table-column>
+      <el-table-column
+          prop="depot_name"
+          label="仓库">
+      </el-table-column>
+      <el-table-column
+          prop="unit_name"
+          label="单位">
+      </el-table-column>
+      <el-table-column
+          prop="sale_unit_price"
+          label="单价">
+      </el-table-column>
+      <el-table-column
+          prop="product_num"
+          label="数量">
+      </el-table-column>
+      <el-table-column
+          label="合计">
+        <template v-slot="slot">
+          {{slot.row.sale_unit_price*slot.row.product_num}}
+        </template>
+      </el-table-column>
+      <el-table-column
+          prop="u_name"
+          label="操作员">
+      </el-table-column>
+    </el-table>
+    <div class="page-list">
+      <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          background
+          :total="Number(total)"
+          :page-sizes="[1,20,30, 50]"
+          layout="sizes, prev, pager, next, jumper"
+      ></el-pagination>
+    </div>
   </div>
 </template>
 
 <script>
+import moment from 'moment'
 export default {
   name: "SalesOrder",
   data() {
     return {
+      tableData:[],
       form: {
         code: '',
         name: '',
         startTime:'',
         endTime:'',
-        value1: []
+        page: 1,
+        pageSize: 10,
       },
+      total: '',
       shortcuts: [{
         text: '上周报表',
         value: (() => {
@@ -57,7 +131,7 @@ export default {
           return [start, end]
         })(),
       }, {
-        text: '前日报表',
+        text: '前日至今',
         value: (() => {
           const end = new Date()
           const start = new Date()
@@ -65,7 +139,7 @@ export default {
           return [start, end]
         })(),
       },{
-        text: '昨日报表',
+        text: '昨日至今',
         value: (() => {
           const end = new Date()
           const start = new Date()
@@ -101,6 +175,23 @@ export default {
     };
   },
   methods: {
+    // 每页显示信息条数
+    handleSizeChange(pageSize) {
+      this.form.pageSize = pageSize
+      this.find(this.form);
+    },
+    // 进入某一页
+    handleCurrentChange(val) {
+      this.form.page = val
+      this.find(this.form)
+    },
+    formatterController:function(row, column) {
+      var date = row[column.property];
+      if (date === undefined) {
+        return "";
+      }
+      return moment(date).format("YYYY-MM-DD HH:mm:ss");
+    },
     find() {
       if (new Date(this.form.startTime).getTime()>new Date(this.form.endTime).getTime()){
         this.$notify({
@@ -108,12 +199,20 @@ export default {
           message: '开始时间不能小于结束时间'
         });
       }
-      console.log(this.form)
+      var vm =this;
+      vm.axios.post("http://localhost:8089/cypsi/sel/listSales",this.form)
+          .then(res => {
+            this.tableData=res.data.data.list;
+            this.total=res.data.data.total;
+          })
     },
     update(){
       this.form.startTime= this.value1[0];
       this.form.endTime= this.value1[1];
     }
+  },
+  mounted() {
+    this.find();
   }
 }
 </script>
